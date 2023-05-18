@@ -11,7 +11,7 @@
 
 1. Clone repo on your local machine:
 
-   `git clone https://github.com/confidentmeerkat/backend-eparent.git `
+   `git@github.com:mainstar2021/backend-eparent.git `
 
 2. Rename the .env.example file to .env
 3. Install npm modules
