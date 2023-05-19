@@ -34,6 +34,8 @@ interface UpdateData {
 
 type CreateUser = {
   name: string;
+  fname: string;
+  lname: string;
   email: string;
   password: string;
   mobile: string;
@@ -49,13 +51,15 @@ type CreateUser = {
 
 export const addUserasMaster: RouteHandlerMethod = async (request, reply) => {
 
-  const { name, email, password, mobile, line1, line2, city, country, postcode, role, nurseryId } = request.body as CreateUser;
+  const { name, fname, lname, email, password, mobile, line1, line2, city, country, postcode, role, nurseryId } = request.body as CreateUser;
 
   const userRepository = request.server.db.getRepository(User);
   const hashpass = await request.server.bcrypt.hash(password);
   const newUser = userRepository.create({
     email: email,
     name: name,
+    fname: fname,
+    lname: lname,
     password: hashpass,
     mobile: mobile,
     address: { line1, line2, city, country, postcode },

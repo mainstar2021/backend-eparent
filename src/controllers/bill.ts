@@ -33,6 +33,14 @@ export const create: RouteHandlerMethod = async (request, reply) => {
   return await repository.save(newInvoice);
 }
 
+export const getAdminBills: RouteHandlerMethod = async (request, reply) => {
+
+  const repository = request.server.db.getRepository(Bill);
+  const bills = await repository.find({ relations: { nurseryaccount: true } });
+  
+  return bills;
+};
+
 // export const addBill: RouteHandlerMethod = async (request, reply) => {
 //   const userId = request.user.id;
 //   const { title, content, recieverId } = request.body as AddInvoiceData;

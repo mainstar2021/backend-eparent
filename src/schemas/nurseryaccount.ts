@@ -4,6 +4,8 @@ export const createNurseryaccountSchema = {
         type: "object",
         properties: {
             name: { type: "string" },
+            tax: { type: "string" },
+            phone: { type: "string" },
         },
     },
 };

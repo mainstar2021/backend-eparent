@@ -3,7 +3,9 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  ManyToOne,
 } from "typeorm";
+import { Nurseryaccount } from "./Nurseryaccount";
 
 @Entity()
 export class Bill {
@@ -30,4 +32,7 @@ export class Bill {
 
   @CreateDateColumn()
   date: Date;
+
+  @ManyToOne(() => Nurseryaccount, (nurseryaccount) => nurseryaccount.bills)
+  nurseryaccount: Nurseryaccount;
 }

@@ -10,16 +10,20 @@ export const index: RouteHandlerMethod = async (request, reply) => {
 
 type AddNurseryData = {
   name: string;
+  tax: string;
+  phone: string;
 }
 
 export const create: RouteHandlerMethod = async (request, reply) => {
-  const { name } = request.body as AddNurseryData;
+  const { name, tax, phone } = request.body as AddNurseryData;
   console.log(name);
 
   const repository = request.server.db.getRepository(Nurseryaccount);
 
   const newNursery = repository.create({
     name: name,
+    tax: tax,
+    phone: phone,
   });
   
   return await repository.save(newNursery);
