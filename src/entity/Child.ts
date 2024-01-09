@@ -7,8 +7,10 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 import { Event } from "./Events";
+import { Attendance } from "./Attendance";
 import { Classroom } from "./Classroom";
 import Transaction from "./Transaction";
+import { Report } from "./Report";
 
 @Entity()
 export class Child {
@@ -85,6 +87,9 @@ export class Child {
   @Column()
   third_mobile: string;
 
+  @Column()
+  attendance_mode: number;
+
   @ManyToOne(() => User, (user) => user.children)
   parent: User;
 
@@ -93,6 +98,12 @@ export class Child {
 
   @OneToMany(() => Event, (event) => event.child)
   events: Event[];
+
+  @OneToMany(() => Report, (report) => report.child)
+  reports: Report[];
+
+  @OneToMany(() => Attendance, (attendance) => attendance.child)
+  attendance: Attendance[];
 
   @OneToMany(() => Transaction, (transaction) => transaction.child)
   transactions: Transaction[];

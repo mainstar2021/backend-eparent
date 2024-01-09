@@ -30,6 +30,7 @@ export const index: RouteHandlerMethod = async (request, reply) => {
     .leftJoin("children.transactions", "transactions")
     .select(["transactions.id as id", "transactions.heading as heading", "transactions.type as type", "transactions.amount as amount", "transactions.currency as currency", "transactions.ref as ref", "transactions.isCredit as isCredit", "transactions.date as date", "transactions.childId as childID"])
     .where("user.id = :id", { id: userId })
+    .where("transactions.id > 0")
     .orderBy("transactions.date", "DESC")
     .getRawMany();
 

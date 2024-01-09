@@ -30,6 +30,9 @@ export class Bill {
   @Column()
   nurseryaccountId: number;
 
+  @Column()
+  status: number;
+
   @CreateDateColumn()
   date: Date;
 

@@ -1,6 +1,7 @@
 {
   "extends": "fastify-tsconfig",
   "compilerOptions": {
+    "jsx": "react",
     "outDir": "dist",
     "sourceMap": true,
     "experimentalDecorators": true,

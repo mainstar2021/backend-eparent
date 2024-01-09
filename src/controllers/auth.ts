@@ -14,12 +14,12 @@ export const login: RouteHandlerMethod = async (request, reply) => {
     where: { email },
   });
   if (!user) {
-    reply.badRequest("This email is not registered.");
+    reply.badRequest("login.error.email");
     return;
   }
 
   if (!(await request.server.bcrypt.compare(password, user?.password))) {
-    reply.badRequest("Wrong password");
+    reply.badRequest("login.error.password");
     return;
   }
 
@@ -29,7 +29,7 @@ export const login: RouteHandlerMethod = async (request, reply) => {
       where: {id: user.nurseryId}
     })
     if (nursery && nursery.disable) {
-      reply.badRequest("Your nursery has been disabled.");
+      reply.badRequest("login.error.disabled");
       return;
     }
   }

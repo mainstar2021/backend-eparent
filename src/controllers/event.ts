@@ -36,10 +36,20 @@ export const getNurseryEvents: RouteHandlerMethod = async (request, reply) => {
   // const userId = request.user.id;
   const manager = request.server.db.manager;
 
-
   return await manager.find(Event, {
     relations: {poster: true, child: true, eventType: true, comments: true},
     order: {created_at: "desc"},
+  });
+}
+
+export const getReportEvents: RouteHandlerMethod = async (request, reply) => {
+  const { id } = request.query as { id: number };
+  const manager = request.server.db.manager;
+
+  return await manager.find(Event, {
+    where: { child: { id: id }},
+    relations: {poster: true, child: true, eventType: true, comments: true},
+    order: {created_at: "asc"},
   });
 }
 
