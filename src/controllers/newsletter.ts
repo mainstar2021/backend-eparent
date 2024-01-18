@@ -54,30 +54,53 @@ export const addNewsletterAdmin: RouteHandlerMethod = async (request, reply) => 
 };
 
 type UpdateNewsletterData = {
-    id: number;
-    year: string;
-    month: string;
-    content_resume: string;
-    content_birthday: string;
-    content_movement: string;
-    content_event: string;
-    content_msg: string;
-    nursery_id: number;
+    id: MultipartValue<string>;
+    year: MultipartValue<string>;
+    month: MultipartValue<string>;
+    content_resume: MultipartValue<string>;
+    content_birthday: MultipartValue<string>;
+    content_movement: MultipartValue<string>;
+    content_event: MultipartValue<string>;
+    content_msg: MultipartValue<string>;
+    imgs: MultipartValue<string>[];
+    images: MultipartFile[];
 }
 
 export const updateNewsletter: RouteHandlerMethod = async (request, reply) => {
-    const { id, year, month, content_resume, content_birthday, content_movement, content_event, content_msg, nursery_id } = request.body as UpdateNewsletterData;
+    const { id, year, month, content_resume, content_birthday, content_movement, content_event, content_msg, imgs, images } = request.body as UpdateNewsletterData;
+
+    let o_paths = [];
+    let paths = [];
+    
+    if (images) {
+      for (let image of Array.isArray(images) ? images : [images]) {
+        const buffer = await image.toBuffer();
+
+        const path = `uploads/images/newsletter/${randomUUID() + "_" + image.filename}`;
+
+        fs.appendFileSync(`storage/${path}`, buffer);
+
+        paths.push("assets/" + path);
+      }
+    }
+
+    if(imgs) {
+      for (let img of Array.isArray(imgs) ? imgs : [imgs]) {
+        o_paths.push(img.value);
+      }
+    }
+
     const repository = request.server.db.getRepository(Newsletter);
     const newData = repository.save({
-        id: id,
-        year: year,
-        month: month,
-        content_resume: content_resume,
-        content_birthday: content_birthday,
-        content_movement: content_movement,
-        content_event: content_event,
-        content_msg: content_msg,
-        nursery_id: nursery_id,
+      id: parseInt(id.value),
+      year: year.value,
+      month: month.value,
+      content_resume: content_resume.value,
+      content_birthday: content_birthday.value,
+      content_movement: content_movement.value,
+      content_event: content_event.value,
+      content_msg: content_msg.value,
+      images: [...o_paths, ...paths]
       });
       
       return reply.send(newData);
