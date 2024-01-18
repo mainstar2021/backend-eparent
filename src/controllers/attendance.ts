@@ -27,7 +27,7 @@ export const addAttendance: RouteHandlerMethod = async (request, reply) => {
     comment: comment,
     start_date: start_date,
     end_date: end_date,
-    status: type? 1: 0
+    status: 1
   });
 
   return await attendanceRepository.save(newData);
