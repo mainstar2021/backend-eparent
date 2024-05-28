@@ -2,7 +2,7 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Classroom } from "./Classroom";
 import { User } from "./User";
 import { Bill } from "./Bill";
-
+import { Withdraw } from "./Withdraw";
 
 @Entity()
 export class Nurseryaccount {
@@ -29,4 +29,7 @@ export class Nurseryaccount {
 
   @OneToMany(() => Bill, (bill) => bill.nurseryaccount)
   bills: Bill[];
+
+  @OneToMany(() => Withdraw, (withdraw) => withdraw.nurseryaccount)
+  withdraws: Withdraw[];
 }

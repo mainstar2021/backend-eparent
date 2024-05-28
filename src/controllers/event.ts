@@ -7,6 +7,7 @@ import * as fs from "fs";
 import { Comment } from "@entity/Comment";
 import { In } from "typeorm";
 import { User } from "@entity/User";
+// import { DevMatter } from "@entity/DevMatter";
 
 export const index: RouteHandlerMethod = async (request, reply) => {
   const { children = [] } = request.query as { children: number[] };
@@ -158,6 +159,25 @@ export const getComments: RouteHandlerMethod = async (request, reply) => {
 
     return event?.comments;
   } catch (error) {
+    reply.internalServerError();
+  }
+};
+
+export const getIndicators: RouteHandlerMethod = async (request, reply) => {
+  const { eventId } = request.params as { eventId: string };
+
+  const eventsRepository = await request.server.db.getRepository(Event);
+
+  try {
+    const event = await eventsRepository.findOne({
+      where: { id: parseInt(eventId) },
+      relations: { devCheckpoint: true }
+    });
+    
+    return event;
+    // return event?.comments;
+  } catch (error) {
+
     reply.internalServerError();
   }
 };

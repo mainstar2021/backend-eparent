@@ -1,36 +1,32 @@
 import { RouteHandlerMethod } from "fastify";
-import MyDocument from "./pdf";
-import * as React from 'react';
-import ReactPDF from '@react-pdf/renderer';
+// import MyDocument from "./pdf";
+// import * as React from 'react';
+// import ReactPDF from '@react-pdf/renderer';
 import { randomUUID } from "crypto";
 import { Report } from "@entity/Report";
 import { User } from "@entity/User";
 import { In } from "typeorm";
 import * as fs from "fs";
+import { MultipartValue, MultipartFile } from "@fastify/multipart";
 
 export const addReport: RouteHandlerMethod = async (request, reply) => {
 
-    const { id } = request.body as { id: number };
+    const { id, blob_file } = request.body as { id: MultipartValue<string>, blob_file: MultipartFile };
 
-    console.log(id)
+    const buffer = await blob_file.toBuffer();
+
+    const path = `uploads/pdf/reports/${randomUUID()}.pdf`;
+
+    fs.appendFileSync(`storage/${path}`, buffer);
 
     const repository = request.server.db.getRepository(Report);
 
-    // fs.writeFileSync('storage/uploads/images/gallery/test.pdf', blob);
-
-    const path = `uploads/pdf/reports/${randomUUID()}.pdf`;
-    await ReactPDF.renderToFile(<MyDocument />, `storage/${path}`);
-
     const newData = repository.create({
-        child: { id: id },
-        path: "assets/" + path,
+        child: { id: parseInt(id.value) },
+        path: "storage/" + path,
     });
     
-    return await repository.save(newData);
-
-    // console.log(stream);
-    // ReactPDF.render(<MyDocument />, `example.pdf`);
-   
+    return await repository.save(newData);  
 }
 
 export const getReports: RouteHandlerMethod = async (request, reply) => {

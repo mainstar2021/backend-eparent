@@ -10,6 +10,7 @@ import {
 import { User } from "./User";
 import { EventType } from "./EventType";
 import { Comment } from "./Comment";
+import { DevCheckpoint } from "./DevCheckpoint";
 
 @Entity()
 export class Event {
@@ -36,4 +37,10 @@ export class Event {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @Column("jsonb")
+  indicators: { [prop: string]: any };
+
+  @ManyToOne(() => DevCheckpoint)
+  devCheckpoint: DevCheckpoint;
 }

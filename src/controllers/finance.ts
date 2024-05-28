@@ -45,6 +45,7 @@ export const index: RouteHandlerMethod = async (request, reply) => {
   return {
     balance,
     recentTransactions: transactions.slice(0, 3),
+    transactions: transactions,
     currency: transactions[0].currency,
   };
 };
